@@ -22,4 +22,4 @@
         <activity android:name=".m1home.HomeActivity"></activity>
     </application>
 
-</manifest>
+    </manifest>
