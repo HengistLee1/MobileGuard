@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
                             showInterPwdDialog();
                         }else{
                             //弹出设置密码对话框
-                            showInterPwdDialog();
+                            showSetUpPwdDialog();
                         }
                         break;
                 }
@@ -93,7 +93,8 @@ public class HomeActivity extends AppCompatActivity {
                                 //两次密码一致，存储密码
                                 savePwd(affirmPwd);
                                 setupPasswordDialog.dismiss();
-                                showSetUpPwdDialog();
+                                //显示输入密码框
+                                showInterPwdDialog();
                             }else{
                                 Toast.makeText(HomeActivity.this, "两次密码不一致", Toast.LENGTH_LONG).show();
                             }
@@ -171,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * 判断用户是否设置手机防盗密码
+     * 判断用户是否设置过手机防盗密码
      */
     private boolean isSetUpPassword(){
         String password = msharedPreferences.getString("PhoneAntiTheftPWD",null);
