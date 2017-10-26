@@ -1,4 +1,4 @@
-package cn.edu.gdmec.android.mobileguard.m2theftguard.receiver;
+package cn.edu.gdmec.android.mobileguard.m2theftguard.service;
 
 import android.app.Service;
 import android.content.Intent;
