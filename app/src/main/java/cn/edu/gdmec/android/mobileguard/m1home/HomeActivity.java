@@ -1,5 +1,7 @@
 package cn.edu.gdmec.android.mobileguard.m1home;
 
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +13,13 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import cn.edu.gdmec.android.mobileguard.R;
 import cn.edu.gdmec.android.mobileguard.m1home.adapter.HomeAdapter;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.LostFindActivity;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.dialog.InterPasswordDialog;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.dialog.SetupPasswordDialog;
+import cn.edu.gdmec.android.mobileguard.m2theftguard.receiver.MyDeviceAdminReceiver;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.utils.MD5Utils;
 
 public class HomeActivity extends AppCompatActivity {
@@ -25,12 +27,17 @@ public class HomeActivity extends AppCompatActivity {
     private long mExitTime;
     /**存储手机防盗密码的sp  */
     private SharedPreferences msharedPreferences;
+    /**设备管理员*/
+    private DevicePolicyManager policyManager;
+    /**申请权限*/
+    private ComponentName componentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getSupportActionBar().hide();
+        //第一个参数是存储时的名称，第二个参数则是文件的打开方式
         msharedPreferences = getSharedPreferences("config",MODE_PRIVATE);
         gv_home = (GridView) findViewById(R.id.gv_home);
         gv_home.setAdapter(new HomeAdapter(HomeActivity.this));
@@ -50,6 +57,20 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+        //1、获取设备管理员
+        policyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        //2、申请权限 MyDeviceAdminReceiver继承自DeviceAdminReceiver
+        componentName = new ComponentName(this, MyDeviceAdminReceiver.class);
+        //3、判断，如果没有权限则申请权限
+        boolean active = policyManager.isAdminActive(componentName);
+        if(!active){
+            //没有管理员权限，则获取管理员权限
+            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN , componentName);
+            intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION , "获取超级管理员权限，用于远程锁屏和清除数据");
+            startActivity(intent);
+        }
+
 
     }
 
@@ -94,7 +115,6 @@ public class HomeActivity extends AppCompatActivity {
                                 //两次密码一致，存储密码
                                 savePwd(affirmPwd);
                                 setupPasswordDialog.dismiss();
-                                //显示输入密码框
                                 showInterPwdDialog();
                             }else{
                                 Toast.makeText(HomeActivity.this, "两次密码不一致", Toast.LENGTH_LONG).show();
@@ -130,14 +150,13 @@ public class HomeActivity extends AppCompatActivity {
                     //进入防盗页面
                     interPasswordDialog.dismiss();
                     startActivity(LostFindActivity.class);
-                    Toast.makeText(HomeActivity.this, "可以进入手机防盗模块", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(HomeActivity.this, "可以进入手机防盗模块", Toast.LENGTH_LONG).show();
                 }else{
                     //对话框消失，弹出土司
                     interPasswordDialog.dismiss();
                     Toast.makeText(HomeActivity.this, "密码有误，请重新输入!", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void cancel() {
                 interPasswordDialog.dismiss();
@@ -173,7 +192,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * 判断用户是否设置过手机防盗密码
+     * 判断用户是否设置手机防盗密码
      */
     private boolean isSetUpPassword(){
         String password = msharedPreferences.getString("PhoneAntiTheftPWD",null);
@@ -182,8 +201,4 @@ public class HomeActivity extends AppCompatActivity {
         }
         return true;
     }
-
-
-
-
 }
