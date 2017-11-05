@@ -6,17 +6,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_weight="10"
-        android:background="@color/purple"
-        android:gravity="center">
-
-        <include layout="@layout/setup_radiogroup"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="100"
         android:background="@android:color/white"
@@ -91,6 +80,18 @@
                 android:gravity="center" />
 
         </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_weight="10"
+        android:background="@color/purple"
+        android:gravity="center">
+
+        <include layout="@layout/setup_radiogroup"/>
 
     </LinearLayout>
 
