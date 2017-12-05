@@ -22,6 +22,7 @@ import java.util.Date;
 
 import cn.edu.gdmec.android.mobileguard.R;
 import cn.edu.gdmec.android.mobileguard.m8trafficmonitor.db.dao.TrafficDao;
+import cn.edu.gdmec.android.mobileguard.m8trafficmonitor.service.TrafficMonitoringService;
 import cn.edu.gdmec.android.mobileguard.m8trafficmonitor.utils.SystemInfoUtils;
 
 public class TrafficMonitoringActivity extends AppCompatActivity implements View.OnClickListener{
@@ -49,7 +50,7 @@ public class TrafficMonitoringActivity extends AppCompatActivity implements View
         if (!SystemInfoUtils
                 .isServiceRunning(this,
                         "cn.edu.gdmec.android.mobileguard.m8trafficmonitor.service.TrafficMonitoringService")) {
-            startActivity(new Intent(this, TrafficMonitoringActivity.class));
+            startService(new Intent(this, TrafficMonitoringService.class));
         }
         initView();
         registReceiver();
