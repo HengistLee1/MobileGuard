@@ -76,7 +76,7 @@ public class TrafficMonitoringActivity extends AppCompatActivity implements View
     }
 
     private void initData() {
-        /*long totalflow = mSP.getLong("totalflow",0);
+        long totalflow = mSP.getLong("totalflow",0);
         long usedflow = mSP.getLong("usedflow",0);
         if (totalflow > 0 & usedflow >= 0) {
             float scale = usedflow / totalflow;
@@ -98,20 +98,20 @@ public class TrafficMonitoringActivity extends AppCompatActivity implements View
         if (mobileGPRS < 0) {
             mobileGPRS = 0;
         }
-        mTodayTV.setText("本日已用：" + Formatter.formatFileSize(this, mobileGPRS));*/
+        mTodayTV.setText("本日已用：" + Formatter.formatFileSize(this, mobileGPRS));
     }
 
     private void registReceiver() {
-       /* receiver = new CorrectFlowReceiver();
+        receiver = new CorrectFlowReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.provider.Telephony.SMS_RECEIVED");
-        registerReceiver(receiver , filter);*/
+        registerReceiver(receiver , filter);
     }
 
 
     @Override
     public void onClick(View v) {
-        /*switch (v.getId()) {
+        switch (v.getId()) {
             case R.id.imgv_leftbtn:
                 finish();
                 break;
@@ -142,7 +142,7 @@ public class TrafficMonitoringActivity extends AppCompatActivity implements View
 
 
                 }
-        }*/
+        }
 
     }
 
